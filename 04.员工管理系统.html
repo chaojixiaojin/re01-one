@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tlias智能学习辅助系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin:  auto;
+            padding: 20px;
+        }
+        
+        /* 顶部导航栏样式 */
+        .top-navbar {
+            background: linear-gradient(135deg, #AAAAAA, #AAAAAA);
+            color: white;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+           
+            
+        }
+        
+        .system-title {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            /* 将导航栏字体改写成楷体 */
+            font-family: '楷体';
+        
+        }
+        
+        .logout-link {
+            color: #f8f9fa;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .logout-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* 搜索表单样式 */
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 28px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3182ce, #2b6cb0);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(66, 153, 225, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e0);
+            color: #4a5568;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #cbd5e0, #a0aec0);
+            transform: translateY(-2px);
+        }
+        
+        /* 表格区域样式 */
+        .table-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            overflow-x: auto;
+        }
+        
+        .table-container {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table-container th {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            color: #2d3748;
+            font-weight: 600;
+            text-align: left;
+            padding: 16px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .table-container td {
+            padding: 16px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        
+        .table-container tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-edit {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-delete {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+         
+        .btn-edit:hover, .btn-delete:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        } 
+
+        
+        .male {
+            background: linear-gradient(135deg, #90cdf4, #4299e1);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 14px;
+        }
+        
+        .female {
+            background: linear-gradient(135deg, #fbb6ce, #ed64a6);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 14px;
+        }
+        
+        /* 页脚样式 */
+        .footer {
+            background: linear-gradient(135deg, #AAAAAA, #AAAAAA);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .footer p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+        
+        .footer p:first-child {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn-group {
+                margin-top: 10px;
+                justify-content: center;
+            }
+            
+            .top-navbar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <header class="top-navbar">
+            <h1 class="system-title">Tlias智能学习辅助系统</h1>
+            <a href="#" class="logout-link"> <i class="fas fa-sign-out-alt"></i>退出登录</a>  
+        </header>
+        
+        <!-- 搜索表单区域 -->
+        <section class="search-section">
+            <h2 class="section-title">员工信息查询</h2>
+            <form class="search-form">
+                <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input type="text" id="name" class="form-control" placeholder="请输入姓名">
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">性别</label>
+                    <select id="gender" class="form-control">
+                        <option value="">请选择性别</option>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="position">职位</label>
+                    <select id="position" class="form-control">
+                        <option value="">请选择职位</option>
+                        <option value="班主任">班主任</option>
+                        <option value="讲师">讲师</option>
+                        <option value="学工主管">学工主管</option>
+                        <option value="教研主管">教研主管</option>
+                        <option value="咨询师">咨询师</option>
+                    </select>
+                </div>
+                
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> 查询</button>
+                    <button type="reset" class="btn btn-secondary"><i class="fas fa-undo"></i> 清空</button>
+                </div>
+            </form>
+        </section>
+        
+        <!-- 表格展示区 -->
+        <section class="table-section">
+            <h2 class="section-title">员工信息列表</h2>
+            <div class="table-responsive">
+                <table class="table-container">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>头像</th>
+                            <th>职位</th>
+                            <th>入职日期</th>
+                            <th>最后操作时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>令狐冲</td>
+                            <td><span class="male">男</span></td>
+                            <td><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="令狐冲" class="avatar"></td>
+                            <td>讲师</td>
+                            <td>2020-05-15</td>
+                            <td>2023-10-08 14:30</td>
+                            <td class="action-buttons">
+                                <button class="btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                <button class="btn-delete"><i class="fas fa-trash"></i> 删除</button> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>任盈盈</td>
+                            <td><span class="female">女</span></td>
+                            <td><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="任盈盈" class="avatar"></td>
+                            <td>教研主管</td>
+                            <td>2019-08-22</td>
+                            <td>2023-10-07 09:45</td>
+                            <td class="action-buttons">
+                                <button class="btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                <button class="btn-delete"><i class="fas fa-trash"></i> 删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>岳不群</td>
+                            <td><span class="male">男</span></td>
+                            <td><img src="https://randomuser.me/api/portraits/men/22.jpg" alt="岳不群" class="avatar"></td>
+                            <td>学工主管</td>
+                            <td>2018-03-10</td>
+                            <td>2023-10-06 16:20</td>
+                            <td class="action-buttons">
+                                <button class="btn-edit"><i class="fas fa-edit"></i> 编辑</button>
+                                <button class="btn-delete"><i class="fas fa-trash"></i> 删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- 页脚版权区域 -->
+        <footer class="footer">
+            <p>江苏传智播客教育科技股份有限公司</p>
+            <p>版权所有 Copyright 2006-2024 All Rights Reserved</p>
+        </footer>
+    </div>
+    <script>
+        //通过Js为上述的表格中数据行添加事件监听，实现鼠标进入后，背景色#f2e2e2；鼠标离开后，背景色需要设置为#fff；（JS新版本的语法)
+        let trs = document.querySelectorAll("tr");
+        for(let i = 0; i < trs.length; i++){
+            trs[i].addEventListener("mouseenter",function(){
+                this.style.backgroundColor = "#f2e2e2";
+            });
+            trs[i].addEventListener("mouseleave",function(){
+                this.style.backgroundColor = "#fff";
+            });
+        }
+    </script>
+</body>
+</html>
